@@ -11,9 +11,6 @@
             "email": "flyandi@yahoo.com"
         }
     ],
-    "require": {
-        "php": ">=5.3.9"
-    },
     "autoload": {
       
         "files": ["src/helpers.php"]
