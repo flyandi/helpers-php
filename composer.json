@@ -5,6 +5,7 @@
     "keywords": [],
     "homepage": "https://github.com/flyandi/helpers-php",
     "license": "MIT",
+    "version": "1.0.1",
     "authors": [
         {
             "name": "Andreas Schwarz",

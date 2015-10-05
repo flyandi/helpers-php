@@ -4,7 +4,7 @@
  * 
  * A useful collection of global PHP helpers
  * 
- * @version: v1.0.0
+ * @version: v1.0.1
  * @author: Andy Schwarz
  *
  * Created by Andy Schwarz. Please report any bug at http://github.com/flyandi/helpers-php
@@ -61,6 +61,17 @@ function DefaultValue($value, $default = null){
 	if (empty($value) || (is_string($value)&&strlen(trim($value))==0) || $value===null) return $default;
 	// return value
 	return $value;
+}
+
+/**
+ * (macro) GetVarStack
+ * returns all variables one stack
+ *
+ * @param void
+ */
+
+function GetVarStack() {
+	return Extend($_REQUEST, $_COOKIE, $_GET, $_POST, $GLOBALS);
 }
 
 
