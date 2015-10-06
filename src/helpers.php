@@ -414,10 +414,7 @@ function ReverseDNSLookup($ip) {
 
 function DetectBasePath($includeFullPath = false, $default = false) {
 
-	$root = GetRequest();
-
-	exit;
-
+	return GetServerVar("REQUEST_URI", $default);
 }
 
 

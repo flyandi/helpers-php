@@ -31,5 +31,5 @@ foreach(get_defined_functions()["user"] as $fn) {
 
 	$output[] = "\$result = " . $name ."(" . implode(", ", $attributes) . ");";
 
-	file_put_contents("test/" . $name . ".php", sprintf("<?php\n\n%s\n\nvar_dump(\$result);", implode("\n", $output)));
+	file_put_contents("test/" . $name . ".php", sprintf("<?php\n\ninclude(\"../src/helpers.php\");\n\n%s\n\nvar_dump(\$result);", implode("\n", $output)));
 }
