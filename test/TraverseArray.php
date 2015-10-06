@@ -1,5 +1,7 @@
 <?php
 
+include("../src/helpers.php");
+
 $input = "";
 $handler = "";
 
