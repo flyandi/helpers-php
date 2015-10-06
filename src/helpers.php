@@ -403,6 +403,24 @@ function ReverseDNSLookup($ip) {
 }
 
 
+/**
+ * (macro) DetectBasePath
+ * Tries to detect the basepath less protocol
+ *
+ * @param includeFullPath 	If set to true it also includes the path without protocol
+ * @param default 			The default is returned if no path could be detected, e.g. CLI.
+
+ */
+
+function DetectBasePath($includeFullPath = false, $default = false) {
+
+	$root = GetRequest();
+
+	exit;
+
+}
+
+
 /*** 
  **
  ** Helpers: JSON/JavaScript

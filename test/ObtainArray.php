@@ -1,0 +1,5 @@
+<?php
+
+$input = "";
+
+ObtainArray($input);

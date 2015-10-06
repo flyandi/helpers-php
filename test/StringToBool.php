@@ -1,0 +1,5 @@
+<?php
+
+$s = "";
+
+StringToBool($s);
