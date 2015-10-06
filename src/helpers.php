@@ -714,4 +714,42 @@ function Guid() {
 }	
 
 
+/**
+ * (sprintr) C# style sprintf
+ */
+
+function sprintr() {
+
+	// prepare
+	$arguments = func_get_args();
+	$s = DefaultValue(@$arguments[0], false);
+
+	// sanity check
+	if($s === false) return null;
+
+	// build message
+	foreach(array_slice($arguments, 1) as $index => $value) {
+
+		switch(true) {
+
+			case is_array($value) || is_object($value):
+
+				$values = array();
+
+				foreach((array) $value as $key => $v) {
+					$values[] = sprintf("[%s=%s]", $key, is_array($v) || is_object($v) ? serialize($v) : $v);
+				}
+				
+				$value = implode(" ", $values);
+
+				break;
+		}
+
+		$message = str_replace("{" . $index . "}", (string) $value, $message);
+	}
+
+	return $message;
+}
+
+
 /* EOF (helpers.php) */
