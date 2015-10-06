@@ -4,7 +4,7 @@
  * 
  * A useful collection of global PHP helpers
  * 
- * @version: v1.0.1
+ * @version: v1.0.2
  * @author: Andy Schwarz
  *
  * Created by Andy Schwarz. Please report any bug at http://github.com/flyandi/helpers-php
@@ -454,7 +454,7 @@ function PrepareScript($source, $type = false) {
  * @param assoc 			Set true to return a object
  */ 
 
-function FillVariableString($string, $data, $simplematch = false, $st = VARIABLE_FIELD_BEGIN, $et = VARIABLE_FIELD_END) {
+function FillVariableString($string, $data, $simplematch = false, $st = "{", $et = "}") {
 	// cycle data
 	foreach(is_array($data)?$data:Array() as $name=>$value) {
 		if(is_string($value)) {
