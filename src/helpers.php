@@ -745,10 +745,10 @@ function sprintr() {
 				break;
 		}
 
-		$message = str_replace("{" . $index . "}", (string) $value, $message);
+		$s = str_replace("{" . $index . "}", (string) $value, $s);
 	}
 
-	return $message;
+	return $s;
 }
 
 
