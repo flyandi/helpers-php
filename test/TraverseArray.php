@@ -3,4 +3,6 @@
 $input = "";
 $handler = "";
 
-TraverseArray($input, $handler);
+$result = TraverseArray($input, $handler);
+
+var_dump($result);

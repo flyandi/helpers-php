@@ -3,4 +3,6 @@
 $name = "";
 //$value = "";
 
-SetVar($name, /*$value/*);
+$result = SetVar($name, /*$value*/);
+
+var_dump($result);

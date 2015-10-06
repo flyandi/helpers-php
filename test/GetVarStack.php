@@ -1,4 +1,6 @@
 <?php
 
 
-GetVarStack();
+$result = GetVarStack();
+
+var_dump($result);

@@ -3,4 +3,6 @@
 $source = "";
 //$value = "";
 
-ReverseConstant($source, /*$value/*);
+$result = ReverseConstant($source, /*$value*/);
+
+var_dump($result);

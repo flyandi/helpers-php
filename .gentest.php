@@ -24,12 +24,12 @@ foreach(get_defined_functions()["user"] as $fn) {
 
 		$output[] =  ($optional  ? "//" : "") . "$" . $param->name . " = \"" . $value ."\";";
 
-		$attributes[] = ($optional ? "/*" : "") . "$" . $param->name . ($optional ? "/*" : "");
+		$attributes[] = ($optional ? "/*" : "") . "$" . $param->name . ($optional ? "*/" : "");
 
 	}
 	$output[] = "";
 
-	$output[] = $name ."(" . implode(", ", $attributes) . ");";
+	$output[] = "\$result = " . $name ."(" . implode(", ", $attributes) . ");";
 
-	file_put_contents("test/" . $name . ".php", sprintf("<?php\n\n%s", implode("\n", $output)));
+	file_put_contents("test/" . $name . ".php", sprintf("<?php\n\n%s\n\nvar_dump(\$result);", implode("\n", $output)));
 }

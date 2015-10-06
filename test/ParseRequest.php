@@ -3,4 +3,6 @@
 $request = "";
 //$asobject = "";
 
-ParseRequest($request, /*$asobject/*);
+$result = ParseRequest($request, /*$asobject*/);
+
+var_dump($result);

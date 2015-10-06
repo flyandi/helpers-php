@@ -4,4 +4,6 @@ $source = "";
 //$stripbreaklines = "";
 //$stripcomments = "";
 
-StripWhitespace($source, /*$stripbreaklines/*, /*$stripcomments/*);
+$result = StripWhitespace($source, /*$stripbreaklines*/, /*$stripcomments*/);
+
+var_dump($result);

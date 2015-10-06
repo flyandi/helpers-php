@@ -1,4 +1,6 @@
 <?php
 
 
-GetRemoteAddress();
+$result = GetRemoteAddress();
+
+var_dump($result);

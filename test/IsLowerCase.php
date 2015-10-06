@@ -2,4 +2,6 @@
 
 $s = "";
 
-IsLowerCase($s);
+$result = IsLowerCase($s);
+
+var_dump($result);

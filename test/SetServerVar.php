@@ -3,4 +3,6 @@
 $name = "";
 $value = "";
 
-SetServerVar($name, $value);
+$result = SetServerVar($name, $value);
+
+var_dump($result);

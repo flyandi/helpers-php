@@ -3,4 +3,6 @@
 $name = "";
 //$default = "";
 
-GetSecureVar($name, /*$default/*);
+$result = GetSecureVar($name, /*$default*/);
+
+var_dump($result);

@@ -1,4 +1,6 @@
 <?php
 
 
-Extend();
+$result = Extend();
+
+var_dump($result);

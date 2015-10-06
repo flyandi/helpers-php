@@ -1,4 +1,6 @@
 <?php
 
 
-Guid();
+$result = Guid();
+
+var_dump($result);
