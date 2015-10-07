@@ -727,9 +727,6 @@ function sprintr() {
 	// sanity check
 	if($string === false) return null;
 
-	// fill string based on keynames
-	$string = FillVariableString($string, $arguments);
-
 	// fill string baed on index
 	foreach(array_slice($arguments, 1) as $index => $value) {
 
@@ -737,18 +734,16 @@ function sprintr() {
 
 			case is_array($value) || is_object($value):
 
-				$values = array();
+				$string = FillVariableString($string, (array) $value);
 
-				foreach((array) $value as $key => $v) {
-					$values[] = sprintf("[%s=%s]", $key, is_array($v) || is_object($v) ? serialize($v) : $v);
-				}
-				
-				$value = implode(" ", $values);
+				break;
+
+			default:
+	
+				$string = str_replace("{" . $index . "}", (string) $value, $string);
 
 				break;
 		}
-
-		$string = str_replace("{" . $index . "}", (string) $value, $string);
 	}
 
 	return $string;
