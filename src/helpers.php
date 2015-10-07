@@ -471,8 +471,8 @@ function PrepareScript($source, $type = false) {
 
 function FillVariableString($string, $data, $simplematch = false, $st = "{", $et = "}") {
 	// cycle data
-	foreach(is_array($data)?$data:Array() as $name=>$value) {
-		if(is_string($value)) {
+	foreach(is_array($data)? $data : array() as $name=>$value) {
+		if(!is_array($value) && !is_object($value)) {
 			// template field
 			$string = str_replace($simplematch ? $name : sprintf("%s%s%s", $st, $name, $et), $value, $string);
 		}
@@ -722,12 +722,15 @@ function sprintr() {
 
 	// prepare
 	$arguments = func_get_args();
-	$s = DefaultValue(@$arguments[0], false);
+	$string = DefaultValue(@$arguments[0], false);
 
 	// sanity check
-	if($s === false) return null;
+	if($string === false) return null;
 
-	// build message
+	// fill string based on keynames
+	$string = FillVariableString($string, $arguments);
+
+	// fill string baed on index
 	foreach(array_slice($arguments, 1) as $index => $value) {
 
 		switch(true) {
@@ -745,10 +748,10 @@ function sprintr() {
 				break;
 		}
 
-		$s = str_replace("{" . $index . "}", (string) $value, $s);
+		$string = str_replace("{" . $index . "}", (string) $value, $string);
 	}
 
-	return $s;
+	return $string;
 }
 
 
