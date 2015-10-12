@@ -750,4 +750,61 @@ function sprintr() {
 }
 
 
+/**
+ * (aprintp) array pattern print
+ */
+
+function aprintp() {
+
+	// prepare
+	$arguments = func_get_args();
+	$string = DefaultValue(@$arguments[0], false);
+	$result = array();
+
+	// sanity check
+	if($string === false) return null;
+
+	// fill string baed on index
+	$params = array_slice($arguments, 1);
+
+	foreach($params as $index => $value) {
+
+		switch(true) {
+
+			case is_array($value) || is_object($value):
+
+				$tmp = $string;
+
+				foreach((array) $value as $i => $v) {
+
+					$tmp = str_replace("{" . $i . "}", (string) $v, $tmp);
+
+				}
+
+				$result[] = $tmp;
+
+				break;
+
+			default:
+
+				$result[] = str_replace("{0}", (string) $value, $string);
+				break;
+		}
+
+	}
+
+	return $result;
+
+}
+
+/**
+ * (sprintp) string pattern print
+ */
+
+function sprintp() {
+
+	return implode("", call_user_func_array('aprintp', func_get_args()));
+}
+
+
 /* EOF (helpers.php) */
