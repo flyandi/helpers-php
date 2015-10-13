@@ -709,8 +709,29 @@ function Inbetween($start, $end, $str, $single = true){
  *
  */
 
-function Guid() {
-	return md5(uniqid(rand(), true));
+function Guid($length = 32) {
+
+	switch(true) {
+
+		case function_exists('openssl_random_pseudo_bytes'):
+
+			$value = substr(bin2hex(openssl_random_pseudo_bytes($length / 2)), 0, $length);
+		
+			break;
+
+		default:
+
+			$value = "";
+
+			while(strlen($value) < $length) {
+				$value .= md5(uniqid(rand(), true));
+			}
+
+			$value = substr($value, 0, $length);
+			break;
+	}
+
+	return $value;
 }	
 
 
