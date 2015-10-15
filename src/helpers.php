@@ -828,4 +828,22 @@ function sprintp() {
 }
 
 
+/**
+ * (Inflate) serializes a variable
+ */
+
+function Inflate($o) {
+	return serialize($o);
+}
+
+
+/**
+ * (Deflate) unserializes a variable
+ */
+
+function Deflate($o) {
+	return unserialize($o);
+}
+
+
 /* EOF (helpers.php) */
