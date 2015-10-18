@@ -433,7 +433,9 @@ function DetectBasePath($includeFullPath = false, $default = false) {
  */ 
 
 function JSJSONDecode($json, $assoc = false) {
-	return json_decode(preg_replace('/([{,])(\s*)([^"]+?)\s*:/','$1"$3":',str_replace(array("\n","\r"),"",$json)), $assoc);
+
+	// parse json string
+	return json_decode( ( preg_replace('/\n\s*\n/', "\n", preg_replace('!/\*.*?\*/!s', '', $json) ) ), $assoc );), $assoc);
 }
 
 
