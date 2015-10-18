@@ -409,7 +409,7 @@ function ReverseDNSLookup($ip) {
  *
  * @param includeFullPath 	If set to true it also includes the path without protocol
  * @param default 			The default is returned if no path could be detected, e.g. CLI.
-
+ *
  */
 
 function DetectBasePath($includeFullPath = false, $default = false) {
@@ -435,7 +435,7 @@ function DetectBasePath($includeFullPath = false, $default = false) {
 function JSJSONDecode($json, $assoc = false) {
 
 	// parse json string
-	return json_decode( ( preg_replace('/\n\s*\n/', "\n", preg_replace('!/\*.*?\*/!s', '', $json) ) ), $assoc );), $assoc);
+	return json_decode( ( preg_replace('/\n\s*\n/', "\n", preg_replace('!/\*.*?\*/!s', '', $json) ) ), $assoc );
 }
 
 
