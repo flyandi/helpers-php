@@ -3,7 +3,7 @@
     "type": "library",
     "description": "A collection of useful php helpers.",
     "keywords": [],
-    "homepage": "https://github.com/flyandi/helpers-php",
+    "homepage": "https://github.com/flyandi/php-helpers",
     "license": "MIT",
     "version": "1.0.1",
     "authors": [

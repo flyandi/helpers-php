@@ -1,13 +1,13 @@
 <?php
 /**
- * flyandi:helpers-php library for PHP
+ * flyandi:php-helper library for PHP
  * 
  * A useful collection of global PHP helpers
  * 
  * @version: v1.0.2
  * @author: Andy Schwarz
  *
- * Created by Andy Schwarz. Please report any bug at http://github.com/flyandi/helpers-php
+ * Created by Andy Schwarz. Please report any bug at http://github.com/flyandi/php-helpers
  *
  * Copyright (c) 2015 Andy Schwarz http://github.com/flyandi
  *
