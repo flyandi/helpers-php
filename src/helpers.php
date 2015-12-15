@@ -1,10 +1,11 @@
 <?php
+
 /**
- * flyandi:php-helper library for PHP
+ * flyandi:php-helper library for PHP.
  *
  * A useful collection of global PHP helpers
  *
- * @version: v1.0.2
+ * @version: v1.0.3
  * @author: Andy Schwarz
  *
  * Created by Andy Schwarz. Please report any bug at http://github.com/flyandi/php-helpers
@@ -35,13 +36,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
 /**
- * (Constants)
+ * (Constants).
  */
-
-define("RAW_VAR", "@RAW___VAR");
-
+define('RAW_VAR', '@RAW___VAR');
 
 /***
  **
@@ -51,15 +49,14 @@ define("RAW_VAR", "@RAW___VAR");
 
 /**
  * (macro) DefaultValue
- * Checks the given value and returns an alternative if not passed
+ * Checks the given value and returns an alternative if not passed.
  *
  * @param value             The value to check
  * @param default           A default value
  */
-
 function DefaultValue($value, $default = null)
 {
-    if (empty($value) || (is_string($value)&&strlen(trim($value))==0) || $value===null) {
+    if (empty($value) || (is_string($value) && strlen(trim($value)) == 0) || $value === null) {
         return $default;
     }
     // return value
@@ -68,25 +65,22 @@ function DefaultValue($value, $default = null)
 
 /**
  * (macro) GetVarStack
- * returns all variables one stack
+ * returns all variables one stack.
  *
  * @param void
  */
-
 function GetVarStack()
 {
     return Extend($_REQUEST, $_COOKIE, $_GET, $_POST, $GLOBALS);
 }
 
-
 /**
  * (macro) GetVar
- * returns a variable from the environment stack
+ * returns a variable from the environment stack.
  *
  * @param name              The name of the variable
  * @param default           A default value
  */
-
 function GetVar($name, $default = null)
 {
 
@@ -100,53 +94,45 @@ function GetVar($name, $default = null)
     return GetRawVar($name, $default);
 }
 
-
 /**
  * (macro) GetRawVar
- * returns a variable from the raw input
+ * returns a variable from the raw input.
  *
  * @param name              If given it returns only the variable for it
  */
-
 function GetRawVar($name = false, $default = null)
 {
-
     if (!isset($GLOBALS[RAW_VAR])) {
-        parse_str(file_get_contents("php://input"), $GLOBALS[RAW_VAR]);
+        parse_str(file_get_contents('php://input'), $GLOBALS[RAW_VAR]);
     }
 
     return is_array($GLOBALS[RAW_VAR]) ? ($name === false ? $GLOBALS[RAW_VAR] : ($name !== false && isset($GLOBALS[RAW_VAR][$name]) ? $GLOBALS[RAW_VAR][$name] : $default)) : $default;
 }
 
-
 /**
  * (macro) SetVar
- * returns a variable from the environment stack
+ * returns a variable from the environment stack.
  *
  * @param name              The name of the variable
  * @param value             The value
  */
-
 function SetVar($name, $value = null)
 {
     $GLOBALS[$name] = $value;
 }
 
-
 /**
  * (macro) GetVarEx
- * returns a variable from a variable stack and then environment
+ * returns a variable from a variable stack and then environment.
  *
  * @param name              The name of the variable
  * @param variables         A stack of variables
  * @param default           A default value
  */
-
 function GetVarEx($name, $variables = false, $default = null)
 {
-    return $variables?DefaultValue(@$variables[$name], $default):GetVar($name, $default);
+    return $variables ? DefaultValue(@$variables[$name], $default) : GetVar($name, $default);
 }
-
 
 /**
  * (macro) GetSecureVar
@@ -155,19 +141,18 @@ function GetVarEx($name, $variables = false, $default = null)
  * @param name              The name of the variable to read
  * @param default           A default value
  */
-
-function GetSecureVar($name, $default = "")
+function GetSecureVar($name, $default = '')
 {
     if (isset($GLOBALS[$name])) {
         return @$GLOBALS[$name];
     }
+
     return $default;
 }
 
-
 /**
  * (macro) GetDirVar
- * reads the index name of the request URL
+ * reads the index name of the request URL.
  *
  * @param index             Index/Position of Location
  * @param default           A default value
@@ -176,37 +161,37 @@ function GetSecureVar($name, $default = "")
 function GetDirVar($index = 0, $default = null, $path = false)
 {
     // read defaults
-    $path = $path ? $path : GetServerVar("REQUEST_URI");
+    $path = $path ? $path : GetServerVar('REQUEST_URI');
     // verify
     if (strlen($path) != 0) {
         // prepare the path
-        $r = explode("?", $path);
+        $r = explode('?', $path);
         // split
-        $d = explode("/", $r[0]);
+        $d = explode('/', $r[0]);
         // return value
-        return @DefaultValue(strtolower(@$d[$index+1]), $default);
+        return @DefaultValue(strtolower(@$d[$index + 1]), $default);
     }
+
     return $default;
 }
 
 /**
  * (macro) GetRequest
- * returns the full current request
+ * returns the full current request.
  *
  * @param start         The beginning index
  * @param prepend       If set to true, will add a slash before the path
  */
-
 function GetRequest($index = 0, $prepend = true, $removequery = true)
 {
     // initialize
     $result = false;
     // parse request
-    if ($request = GetServerVar("REQUEST_URI", false)) {
+    if ($request = GetServerVar('REQUEST_URI', false)) {
         // adjust index
         $index += 1;
         // prepare
-        $d = explode("/", $request, $index + 1); // < 1 ? 1 : $index);
+        $d = explode('/', $request, $index + 1); // < 1 ? 1 : $index);
         // check
         if (is_array($d) && isset($d[$index])) {
             $result = $d[$index];
@@ -214,60 +199,53 @@ function GetRequest($index = 0, $prepend = true, $removequery = true)
 
         // removequery
         if ($removequery) {
-            $pos = stripos($result, "?");
+            $pos = stripos($result, '?');
             if ($pos !== false) {
-                $result = substr($result, 0, stripos($result, "?"));
+                $result = substr($result, 0, stripos($result, '?'));
             }
         }
-
     }
     // finalize result
-    return ($prepend && substr($result, 0, 1) != "/" ? "/" : "") . $result;
+    return ($prepend && substr($result, 0, 1) != '/' ? '/' : '').$result;
 }
 
-
 /**
-  * (macro) ParseRequest
-  * Parses a request
-  *
-  * @param request          The request string
-  */
-
+ * (macro) ParseRequest
+ * Parses a request.
+ *
+ * @param request          The request string
+ */
 function ParseRequest($request, $asobject = true)
 {
-
-    $parts = explode("/", $request);
+    $parts = explode('/', $request);
 
     // shift
-    if ($parts[0] == "/" || $parts[0] == "") {
+    if ($parts[0] == '/' || $parts[0] == '') {
         array_shift($parts);
     }
 
-
     // initialize
     $result = array(
-        "parts" => $parts,
-        "root" => $parts[0],
-        "action" => DefaultValue(@$parts[1], false),
-        "value" => DefaultValue(@$parts[2], false)
+        'parts' => $parts,
+        'root' => $parts[0],
+        'action' => DefaultValue(@$parts[1], false),
+        'value' => DefaultValue(@$parts[2], false),
     );
 
     // return
     return $asobject ? (object) $result : $result;
 }
 
-
 /**
  * (macro) GetServerVar
- * returns a variable from the server variable stack
+ * returns a variable from the server variable stack.
  *
  * @param name              The name of the variable
  * @param default           A default value
  */
-
 function GetServerVar($name = REQUEST_URI, $default = null)
 {
-    return isset($_SERVER[$name])?$_SERVER[$name]:$default;
+    return isset($_SERVER[$name]) ? $_SERVER[$name] : $default;
 }
 
 function ServerVar($name = REQUEST_URI, $default = null)
@@ -277,12 +255,11 @@ function ServerVar($name = REQUEST_URI, $default = null)
 
 /**
  * (macro) SetServerVar
- * sets a variable in the server variable stack
+ * sets a variable in the server variable stack.
  *
  * @param name              The name of the variable
  * @param value             The new value
  */
-
 function SetServerVar($name, $value)
 {
     $_SERVER[$name] = $value;
@@ -290,43 +267,41 @@ function SetServerVar($name, $value)
 
 /**
  * (macro) GetHTTPHeaderVar
- * returns a variable from the incoming HTTP header
+ * returns a variable from the incoming HTTP header.
  *
  * @param name              The name of the variable
  * @param default           A default value
  */
-
 function GetHTTPHeaderVar($name, $default = null)
 {
-    if (function_exists("getallheaders")) {
+    if (function_exists('getallheaders')) {
         $headers = getallheaders();
-        return isset($headers[$name])?$headers[$name]:$default;
+
+        return isset($headers[$name]) ? $headers[$name] : $default;
     }
+
     return $default;
 }
 
 /**
  * (macro) AppVar
- * returns a variable from the app stack
+ * returns a variable from the app stack.
  *
  * @param name              The name of the variable
  * @param default           A default value
  */
-
 function AppVar($name, $default = null)
 {
-    return defined($name)?constant($name):$default;
+    return defined($name) ? constant($name) : $default;
 }
-
 
 /**
  * (macro) EnvVar
- * returns a environment variable
+ * returns a environment variable.
  *
  * @param name              The name of the variable
  * @param default           A default value
  */
-
 function EnvVar($name, $default = null)
 {
     $result = getenv($name);
@@ -334,30 +309,27 @@ function EnvVar($name, $default = null)
     return $result === false ? $default : $result;
 }
 
-
 /**
  * (macro) IfAppVar
- * If condition to check for an app stack variable
+ * If condition to check for an app stack variable.
  *
  * @param name              The name of the variable
  * @param is                Check against
  */
-
 function IfAppVar($name, $is = null)
 {
     // get var
     $d = StringToBool(AppVar($name, false));
     // check
-    return $d&&$d==$is;
+    return $d && $d == $is;
 }
 
 /**
  * (macro) ClearVar
- * Clears off a variable if possible
+ * Clears off a variable if possible.
  *
  * @param name              The name of the variable
  */
-
 function ClearVar($name)
 {
     unset($_COOKIE[$name]);
@@ -365,35 +337,31 @@ function ClearVar($name)
     unset($_POST[$name]);
 }
 
-
-
-
 /***
  **
  ** Helpers: Network/HTTP
  **
  **/
 
-
 /**
  * (macro) GetQueryString
- * Converts a string to it's boolean representation
+ * Converts a string to it's boolean representation.
  *
  * @param s                 A boolean string
  */
-
-function GetQueryString($asarray = true, $withqm = false, $default = "", $fromstring = false)
+function GetQueryString($asarray = true, $withqm = false, $default = '', $fromstring = false)
 {
-    $q = $fromstring!==false?$fromstring:GetServerVar("QUERY_STRING", false);
-    if ($q!==false&&strlen($q)>0) {
+    $q = $fromstring !== false ? $fromstring : GetServerVar('QUERY_STRING', false);
+    if ($q !== false && strlen($q) > 0) {
         if ($asarray) {
             //return array_explodevalues(str_replace("&amp;", "&", $q), "&", "=");
         }
-        return sprintf("%s%s", $withqm?"?":"", $q);
+
+        return sprintf('%s%s', $withqm ? '?' : '', $q);
     }
+
     return $default;
 }
-
 
 /**
  * (macro) GetRemoteAddress
@@ -401,18 +369,17 @@ function GetQueryString($asarray = true, $withqm = false, $default = "", $fromst
  *
  * @param void              None required
  */
-
 function GetRemoteAddress()
 {
-    $rm=array("HTTP_CLIENT_IP", "HTTP_X_FORWARDED", "HTTP_FORWARDED_FOR", "HTTP_X_FORWARDED_FOR", "HTTP_X_CLUSTER_CLIENT_IP");
+    $rm = array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_CLUSTER_CLIENT_IP');
     foreach ($rm as $r) {
         if (isset($_SERVER[$r])) {
             return @$_SERVER[$r];
         }
     }
-    return @$_SERVER["REMOTE_ADDR"];
-}
 
+    return @$_SERVER['REMOTE_ADDR'];
+}
 
 /**
  * (macro) ReverseDNSLookup
@@ -420,7 +387,6 @@ function GetRemoteAddress()
  *
  * @param ip                The IP address.
  */
-
 function ReverseDNSLookup($ip)
 {
     // get hostname and ip
@@ -428,29 +394,24 @@ function ReverseDNSLookup($ip)
     $hostip = GetHostByName($hostname);
     // return result
     return array(
-        "hostname"=>$hostname,
-        "hostip"=>$hostip,
-        "sourceip"=>$ip,
-        "match"=>$ip==$hostip
+        'hostname' => $hostname,
+        'hostip' => $hostip,
+        'sourceip' => $ip,
+        'match' => $ip == $hostip,
     );
 }
 
-
 /**
  * (macro) DetectBasePath
- * Tries to detect the basepath less protocol
+ * Tries to detect the basepath less protocol.
  *
  * @param includeFullPath   If set to true it also includes the path without protocol
  * @param default           The default is returned if no path could be detected, e.g. CLI.
- *
  */
-
 function DetectBasePath($includeFullPath = false, $default = false)
 {
-
-    return GetServerVar("REQUEST_URI", $default);
+    return GetServerVar('REQUEST_URI', $default);
 }
-
 
 /***
  **
@@ -460,25 +421,22 @@ function DetectBasePath($includeFullPath = false, $default = false)
 
 /**
  * (macro) JSJSONDecode
- * Decodes a javascript like JSON string
+ * Decodes a javascript like JSON string.
  *
  * @param s                 Any JSON strin
  * @param assoc             Set true to return a object
  */
-
 function JSJSONDecode($json, $assoc = false)
 {
 
     // parse json string
-    return json_decode(( preg_replace('/\n\s*\n/', "\n", preg_replace('!/\*.*?\*/!s', '', $json)) ), $assoc);
+    return json_decode((preg_replace('/\n\s*\n/', "\n", preg_replace('!/\*.*?\*/!s', '', $json))), $assoc);
 }
-
 
 /**
  * (macro) PrepareScript
- * Prepares a script for transfer
+ * Prepares a script for transfer.
  */
-
 function PrepareScript($source, $type = false)
 {
 
@@ -486,12 +444,11 @@ function PrepareScript($source, $type = false)
     $source = StripWhitespace($source, true, true);
 
     // remove anchors
-    $source = str_replace(array("  ", "\t", "\r\n", "\r", "\n"), "", $source);
+    $source = str_replace(array('  ', "\t", "\r\n", "\r", "\n"), '', $source);
 
     // return
     return base64_encode($source);
 }
-
 
 /*** 
  **
@@ -501,19 +458,18 @@ function PrepareScript($source, $type = false)
 
 /**
  * (macro) FillVariableString
- * Replaces all a variable string with values
+ * Replaces all a variable string with values.
  *
  * @param string            Any JSON strin
  * @param assoc             Set true to return a object
  */
-
-function FillVariableString($string, $data, $simplematch = false, $st = "{", $et = "}")
+function FillVariableString($string, $data, $simplematch = false, $st = '{', $et = '}')
 {
     // cycle data
-    foreach (is_array($data)? $data : array() as $name => $value) {
+    foreach (is_array($data) ? $data : array() as $name => $value) {
         if (!is_array($value) && !is_object($value)) {
             // template field
-            $string = str_replace($simplematch ? $name : sprintf("%s%s%s", $st, $name, $et), $value, $string);
+            $string = str_replace($simplematch ? $name : sprintf('%s%s%s', $st, $name, $et), $value, $string);
         }
     }
 
@@ -526,22 +482,18 @@ function FillVariableString($string, $data, $simplematch = false, $st = "{", $et
  **
  **/
 
-
 /**
  * (macro) ReverseConstant
  * Returns the return name of the constant. Also can process classes and interface through
- * reflection
+ * reflection.
  *
  * @param source            The source
  * @param value             An optional query value
- *
  */
-
 function ReverseConstant($source, $value = null)
 {
-
     switch (true) {
-        case interface_exists($source):
+        case interface_exists($source) :
         case class_exists($source):
             return DefaultValue(@array_flip((new \ReflectionClass($source))->getConstants())[$value], null);
             break;
@@ -550,21 +502,18 @@ function ReverseConstant($source, $value = null)
     return false;
 }
 
-
 /*** 
  **
  ** Helpers: Arrays 
  **
  **/
 
-
 /**
  * (macro) Extend
- * Extends an array like the jQuery $.extend function
+ * Extends an array like the jQuery $.extend function.
  *
  * @param <multiple>    As many arrays
  */
-
 function Extend()
 {
     // initialize result
@@ -573,7 +522,7 @@ function Extend()
     // cycle
     foreach (func_get_args() as $arr) {
         if (is_array($arr) || is_object($arr)) {
-            $result = array_merge($result, (array)$arr);
+            $result = array_merge($result, (array) $arr);
         }
     }
 
@@ -581,15 +530,13 @@ function Extend()
     return $result;
 }
 
-
 /**
  * (macro) TraverseArray
- * Traverses an array with filters
+ * Traverses an array with filters.
  *
  * @param input             Any array
  * @param handler           The handling function
  */
-
 function TraverseArray($input, $handler)
 {
     // prepre array
@@ -620,16 +567,14 @@ function TraverseArray($input, $handler)
     }
 }
 
-
 /**
  * (macro) StringArray
- * Converts an array to a request string
+ * Converts an array to a request string.
  *
  * @param input             Any array
  * @param recursive
  */
-
-function StringArray($input, $pairlimiter = "&", $valuelimiter = "=")
+function StringArray($input, $pairlimiter = '&', $valuelimiter = '=')
 {
     // initialize
     $result = array();
@@ -637,31 +582,53 @@ function StringArray($input, $pairlimiter = "&", $valuelimiter = "=")
     // cycle
     foreach ($input as $key => $value) {
         // connect
-        $result[] = $key . $valuelimiter . $value;
+        $result[] = $key.$valuelimiter.$value;
     }
 
     return implode($pairlimiter, $result);
 }
 
-
 /**
  * (macro) ObtainArray
- * Obtains an array from different data sources
+ * Converts an mixed array/object to an array.
  *
- * @param input             Any array
- * @param recursive
+ * @param input             Any object
  */
-
 function ObtainArray($input)
 {
-    // initialize result
-    $result = array();
+    $result = [];
 
+    foreach ($result as $key => $value) {
+        if (is_object($value)) {
+            $value = ObtainArray($value);
+        }
 
-    // return result
-    return $result;
+        $result[$key] = $value;
+    }
+
+    return (array) $result;
 }
 
+/**
+ * (macro) ObtainObject
+ * Converts an mixed array/object to an object.
+ *
+ * @param input             Any array
+ */
+function ObtainObject($input)
+{
+    $result = [];
+
+    foreach ($result as $key => $value) {
+        if (is_array($value)) {
+            $value = ObtainObject($value);
+        }
+
+        $result[$key] = $value;
+    }
+
+    return (object) $result;
+}
 
 /*** 
  **
@@ -669,44 +636,38 @@ function ObtainArray($input)
  **
  **/
 
-
 /**
  * (macro) Compare
- * compares two strings
+ * compares two strings.
  *
  * @param a                 The first string
  * @param b                 The second string
  * @param strict            Needs to match exactly
  */
-
 function Compare($a, $b, $strict = false)
 {
     return $strict ? $a === $b : (strtolower($a) == strtolower($b));
 }
 
-
 /**
  * (macro) StringToBool
- * Converts a string to it's boolean representation
+ * Converts a string to it's boolean representation.
  *
  * @param s                 A boolean string
  */
-
 function StringToBool($s)
 {
-    return in_array(strtolower($s), array("1", "true", "on", "+")) ? true : false;
+    return in_array(strtolower($s), array('1', 'true', 'on', '+')) ? true : false;
 }
-
 
 /**
  * (macro) StripWhitespace
- * Removes all whitespace from the file
+ * Removes all whitespace from the file.
  *
  * @param source            The source text
  * @param stripbreaklines   Set true to remove breaklines as well
  * @param stripcomments     Set true to remove comments as well
  */
-
 function StripWhitespace($source, $stripbreaklines = true, $stripcomments = false)
 {
     // replace
@@ -716,63 +677,55 @@ function StripWhitespace($source, $stripbreaklines = true, $stripcomments = fals
         $stripcomments ? "!/\*[^*]*\*+([^/][^*]*\*+)*/!" : false,
     ) as $pr) {
         if ($pr) {
-            $source = preg_replace($pr, "", $source);
+            $source = preg_replace($pr, '', $source);
         }
-
     }
     // return
     return $source;
 }
 
-
 /**
  * (macro) IsLowerCase
- * Checks if the string is all lower case
+ * Checks if the string is all lower case.
  *
  * @param s                 The source string
  */
-
 function IsLowerCase($s)
 {
-    return strtolower($s)===$s;
+    return strtolower($s) === $s;
 }
-
 
 /**
  * (macro) Inbetween
- * Returns a string between two strings
+ * Returns a string between two strings.
  *
  * @param start             The start mark string
  * @param end               The end mark string
  * @param str               The string
  */
-
 function Inbetween($start, $end, $str, $single = true)
 {
     $matches = array();
     $regex = "/$start(.*?)$end/";
     preg_match_all($regex, $str, $matches);
+
     return $single && isset($matches[1][0]) ? $matches[1][0] : $matches;
 }
 
-
 /**
  * (macro) Guid
- * Creates a generic UID
- *
+ * Creates a generic UID.
  */
-
 function Guid($length = 32)
 {
-
     switch (true) {
         case function_exists('openssl_random_pseudo_bytes'):
             $value = substr(bin2hex(openssl_random_pseudo_bytes($length / 2)), 0, $length);
-        
+
             break;
 
         default:
-            $value = "";
+            $value = '';
 
             while (strlen($value) < $length) {
                 $value .= md5(uniqid(rand(), true));
@@ -785,11 +738,9 @@ function Guid($length = 32)
     return $value;
 }
 
-
 /**
- * (sprintr) C# style sprintf
+ * (sprintr) C# style sprintf.
  */
-
 function sprintr()
 {
 
@@ -799,7 +750,7 @@ function sprintr()
 
     // sanity check
     if ($string === false) {
-        return null;
+        return;
     }
 
     // fill string baed on index
@@ -811,7 +762,7 @@ function sprintr()
                 break;
 
             default:
-                $string = str_replace("{" . $index . "}", (string) $value, $string);
+                $string = str_replace('{'.$index.'}', (string) $value, $string);
 
                 break;
         }
@@ -820,11 +771,9 @@ function sprintr()
     return $string;
 }
 
-
 /**
- * (aprintp) array pattern print
+ * (aprintp) array pattern print.
  */
-
 function aprintp()
 {
 
@@ -835,7 +784,7 @@ function aprintp()
 
     // sanity check
     if ($string === false) {
-        return null;
+        return;
     }
 
     // fill string baed on index
@@ -847,8 +796,7 @@ function aprintp()
                 $tmp = $string;
 
                 foreach ((array) $value as $i => $v) {
-                    $tmp = str_replace("{" . $i . "}", (string) $v, $tmp);
-
+                    $tmp = str_replace('{'.$i.'}', (string) $v, $tmp);
                 }
 
                 $result[] = $tmp;
@@ -856,45 +804,36 @@ function aprintp()
                 break;
 
             default:
-                $result[] = str_replace("{0}", (string) $value, $string);
+                $result[] = str_replace('{0}', (string) $value, $string);
                 break;
         }
-
     }
 
     return $result;
-
 }
 
 /**
- * (sprintp) string pattern print
+ * (sprintp) string pattern print.
  */
-
 function sprintp()
 {
-
-    return implode("", call_user_func_array('aprintp', func_get_args()));
+    return implode('', call_user_func_array('aprintp', func_get_args()));
 }
 
-
 /**
- * (Inflate) serializes a variable
+ * (Inflate) serializes a variable.
  */
-
 function Inflate($o)
 {
     return serialize($o);
 }
 
-
 /**
- * (Deflate) unserializes a variable
+ * (Deflate) unserializes a variable.
  */
-
 function Deflate($o)
 {
     return unserialize($o);
 }
-
 
 /* EOF (helpers.php) */
