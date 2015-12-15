@@ -598,7 +598,7 @@ function ObtainArray($input)
 {
     $result = [];
 
-    foreach ($result as $key => $value) {
+    foreach ($input as $key => $value) {
         if (is_object($value)) {
             $value = ObtainArray($value);
         }
@@ -619,7 +619,7 @@ function ObtainObject($input)
 {
     $result = [];
 
-    foreach ($result as $key => $value) {
+    foreach ($input as $key => $value) {
         if (is_array($value)) {
             $value = ObtainObject($value);
         }
