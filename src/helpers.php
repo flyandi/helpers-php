@@ -639,7 +639,10 @@ function TranslateArray($array, $keyMap, $includeOriginal = true)
     $result = [];
 
     foreach ($array as $key => $value) {
-        if (isset($keyMap[$key])) {
+
+        if(is_array($value)) {
+            $result = Extend($result, TranslateArray($value, $keyMap, $includeOriginal));
+        } else if (isset($keyMap[$key])) {
             $result[$keyMap[$key]] = $value;
         }
     }
