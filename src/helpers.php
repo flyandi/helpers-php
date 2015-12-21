@@ -630,9 +630,30 @@ function ObtainObject($input)
     return (object) $result;
 }
 
-/*** 
+/**
+ * (macro) TranslateArray
+ * Converts keys from one to another.
+ */
+function TranslateArray($array, $keyMap, $includeOriginal = true)
+{
+    $result = [];
+
+    foreach ($array as $key => $value) {
+        if (isset($keyMap[$key])) {
+            $result[$keyMap[$key]] = $value;
+        }
+    }
+
+    if ($includeOriginal) {
+        $result = Extend($array, $result);
+    }
+
+    return $result;
+}
+
+/***
  **
- ** Helpers: Strings 
+ ** Helpers: Strings
  **
  **/
 
