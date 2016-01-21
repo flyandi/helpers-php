@@ -568,6 +568,24 @@ function TraverseArray($input, $handler)
 }
 
 /**
+ * (ChangeKeyCase)
+ */
+
+function ChangeArrayKeyCase($input, $case = CASE_LOWER)
+{
+    $result = [];
+    foreach($input as $key => $value)
+    {
+        if(is_object($value)) $value = (array) $value;
+
+        $result[strtolower($key)] = is_array($value) ? ChangeArrayKeyCase($value, $case) : $value;
+    }
+
+    return $result;
+}
+
+
+/**
  * (macro) StringArray
  * Converts an array to a request string.
  *
