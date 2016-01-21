@@ -569,10 +569,16 @@ function TraverseArray($input, $handler)
 
 /**
  * (ChangeKeyCase)
+ * Changes the case of an array. Also automatically detects object and sub objects / arrays and traverses them as well
+ *
+ * @param input        Any array
+ * @param case         CASE_LOWER or CASE_UPPER
  */
 
 function ChangeArrayKeyCase($input, $case = CASE_LOWER)
 {
+    $input = is_object($input) ? (array) $input : $input;
+
     $result = [];
     foreach($input as $key => $value)
     {
