@@ -678,6 +678,27 @@ function TranslateArray($array, $keyMap, $includeOriginal = true)
     return $result;
 }
 
+/**
+ * (macro) HasElements
+ * Allows to check if an array if multiple elements
+ */
+
+function HasElements($array, $elements, $match = false)
+{
+
+    foreach($elements as $key => $value) {
+
+        $key = is_numeric($key) ? $value : $key;
+
+        if(!isset($array[$key])) return false;
+
+        if($match && !Compare($array[$key], $value)) return false;
+
+    }
+
+    return true;
+}
+
 /***
  **
  ** Helpers: Strings
