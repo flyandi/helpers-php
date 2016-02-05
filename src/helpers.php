@@ -699,6 +699,33 @@ function HasElements($array, $elements, $match = false)
     return true;
 }
 
+/**
+ * (macro) FromArrayObject
+ * Retruns a matching key-name-value from an array object [{}]
+ * 
+ * @param array         The array
+ * @param key           The name of the key
+ * @param value         The value of the key
+ * @param returnKey     Return a specific key once matched
+ */
+
+function FromArrayObject($array, $key, $value, $returnKey = false)
+{
+    if(is_array($array)) {
+
+        foreach($array as $index => $item) {
+
+            if(isset($item[$key]) && Compare($item[$key], $value)) {
+
+                return $returnKey ? DefaultValue(@$item[$returnKey], false) : $item;
+            }
+        }
+    }
+
+    return false;
+}
+
+
 /***
  **
  ** Helpers: Strings
