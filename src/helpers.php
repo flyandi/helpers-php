@@ -711,14 +711,13 @@ function HasElements($array, $elements, $match = false)
 
 function FromArrayObject($array, $key, $value, $returnKey = false)
 {
-    if(is_array($array)) {
+    foreach(Extend($array) as $index => $item) {
 
-        foreach($array as $index => $item) {
+        $item = Extend($item);
 
-            if(isset($item[$key]) && Compare($item[$key], $value)) {
+        if(isset($item[$key]) && Compare($item[$key], $value)) {
 
-                return $returnKey ? DefaultValue(@$item[$returnKey], false) : $item;
-            }
+            return $returnKey ? DefaultValue(@$item[$returnKey], false) : $item;
         }
     }
 
