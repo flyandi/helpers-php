@@ -916,6 +916,14 @@ function sprintp()
 }
 
 /**
+ * (startsWith)
+ */
+
+function startsWith($haystack, $needle) {
+    return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+}
+
+/**
  * (Inflate) serializes a variable.
  */
 function Inflate($o)
