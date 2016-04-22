@@ -548,23 +548,27 @@ function TraverseArray($input, $handler)
         return false;
     }
 
+    $result = $input;
+
     // cycle
     foreach ($input as $key => $value) {
         // prepare
         switch (true) {
             case is_object($key) || is_array($key):
-                TraverseArray($key, $handler);
+                $result[$key] = TraverseArray($key, $handler);
                 break;
             case is_object($value) || is_array($value):
-                TraverseArray($value, $handler);
+                $result = Extend($result, TraverseArray($value, $handler));
                 break;
             default:
                 if (is_callable($handler)) {
-                    $handler($key, $value);
+                    $result[$key] = $handler($key, $value);
                 }
                 break;
         }
     }
+
+    return $result;
 }
 
 /**
