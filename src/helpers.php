@@ -41,6 +41,7 @@
  */
 define('RAW_VAR', '@RAW___VAR');
 
+
 /***
  **
  ** Helpers: Environment
@@ -500,6 +501,38 @@ function ReverseConstant($source, $value = null)
     }
 
     return false;
+}
+
+
+/*** 
+ **
+ ** Helpers: HTML 
+ **
+ **/
+
+
+function Tag ($tag, $attributes, $content=false) {
+
+    $result = [];
+
+    foreach(Extend($attributes) as $key => $value) {
+
+        $key = is_integer($key) ? $value : $key;
+
+        $value = is_integer($key) ? false : $value;
+
+        if($key) {
+            $result[] = $key . ($value ? sprintr("=\"{0}\"", $value) : "");
+        }
+    }
+
+    return sprintr("<{0}{1}{2}>{3}{4}",
+        $tag, 
+        implode(" ", $result),
+        empty($content) ? "/" : "",
+        $content,
+        !empty($content) ? sprintr("</{0}>", $tag) : ""
+    );
 }
 
 /*** 
