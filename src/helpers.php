@@ -526,7 +526,7 @@ function Tag ($tag, $attributes, $content=false) {
         }
     }
 
-    return sprintr("<{0}{1}{2}>{3}{4}",
+    return sprintr("<{0} {1} {2}>{3} {4}",
         $tag, 
         implode(" ", $result),
         empty($content) ? "/" : "",
