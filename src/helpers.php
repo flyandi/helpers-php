@@ -511,7 +511,7 @@ function ReverseConstant($source, $value = null)
  **/
 
 
-function Tag ($tag, $attributes, $content=false) {
+function Tag ($tag, $attributes = false, $content=false) {
 
     $result = [];
 
