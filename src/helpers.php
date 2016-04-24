@@ -531,7 +531,7 @@ function Tag ($tag, $attributes = false, $content=false) {
         implode(" ", $result),
         empty($content) ? "/" : "",
         implode("", is_array($content) ? $content : [$content]),
-        !empty($content) ? sprintr("</{0}>", $tag) : ""
+        $content !== false && $content  !== null ? sprintr("</{0}>", $tag) : ""
     );
 }
 
