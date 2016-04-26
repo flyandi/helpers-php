@@ -467,11 +467,14 @@ function PrepareScript($source, $type = false)
 function FillVariableString($string, $data, $simplematch = false, $st = '{', $et = '}')
 {
     // cycle data
-    foreach (is_array($data) ? $data : array() as $name => $value) {
+    foreach(Extend($data) as $name => $value) {
+
         if (!is_array($value) && !is_object($value)) {
+            
             // template field
             $string = str_replace($simplematch ? $name : sprintf('%s%s%s', $st, $name, $et), $value, $string);
         }
+    
     }
 
     return $string;
