@@ -480,6 +480,25 @@ function FillVariableString($string, $data, $simplematch = false, $st = '{', $et
     return $string;
 }
 
+/**
+ * (macro) ResetVariableString
+ * Removes all variable strings from the string
+ */
+function ResetVariableString($string, $st = '{', $et = '}')
+{
+    $matches = Inbetween($string, $st, $et, false);
+
+    $matches = DefaultValue(@$matches[0], false);
+
+    if($matches) {
+
+        $string = str_replace($matches, "", $string);
+    }
+
+    return $string;
+
+}
+
 /***
  ** 
  ** Helpers: Classes and Constants
@@ -838,11 +857,11 @@ function IsLowerCase($s)
  * @param end               The end mark string
  * @param str               The string
  */
-function Inbetween($start, $end, $str, $single = true)
+function Inbetween($string, $start, $end, $single = true)
 {
     $matches = array();
     $regex = "/$start(.*?)$end/";
-    preg_match_all($regex, $str, $matches);
+    preg_match_all($regex, $string, $matches);
 
     return $single && isset($matches[1][0]) ? $matches[1][0] : $matches;
 }
