@@ -998,4 +998,14 @@ function Deflate($o)
     return unserialize($o);
 }
 
+/**
+ * Substracts a string
+ * @param [type] $source [description]
+ * @param [type] $part   [description]
+ */
+function SubstractString($source, $part) {
+
+    return str_replace($part, "", $source);
+}   
+
 /* EOF (helpers.php) */
