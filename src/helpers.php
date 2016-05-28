@@ -742,7 +742,7 @@ function TranslateArray($array, $keyMap, $includeOriginal = true)
  * Allows to check if an array if multiple elements
  */
 
-function HasElements($array, $elements, $match = false)
+function HasElements($array, $elements, $match = false, $noempty = false)
 {
 
     foreach($elements as $key => $value) {
@@ -750,6 +750,8 @@ function HasElements($array, $elements, $match = false)
         $key = is_numeric($key) ? $value : $key;
 
         if(!isset($array[$key])) return false;
+
+        if($noempty && empty($array[$key])) return false;
 
         if($match && !Compare($array[$key], $value)) return false;
 
@@ -882,7 +884,7 @@ function Guid($length = 32)
             $value = '';
 
             while (strlen($value) < $length) {
-                $value .= md5(uniqid(rand(), true));
+                $value .= hash('SHA256', uniqid(rand(), true));
             }
 
             $value = substr($value, 0, $length);
