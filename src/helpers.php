@@ -41,6 +41,7 @@
  */
 define('RAW_VAR', '@RAW___VAR');
 
+
 /***
  **
  ** Helpers: Environment
@@ -450,9 +451,9 @@ function PrepareScript($source, $type = false)
     return base64_encode($source);
 }
 
-/***
+/*** 
  **
- ** Helpers: Variables
+ ** Helpers: Variables 
  **
  **/
 
@@ -466,18 +467,40 @@ function PrepareScript($source, $type = false)
 function FillVariableString($string, $data, $simplematch = false, $st = '{', $et = '}')
 {
     // cycle data
-    foreach (is_array($data) ? $data : array() as $name => $value) {
+    foreach(Extend($data) as $name => $value) {
+
         if (!is_array($value) && !is_object($value)) {
+            
             // template field
             $string = str_replace($simplematch ? $name : sprintf('%s%s%s', $st, $name, $et), $value, $string);
         }
+    
     }
 
     return $string;
 }
 
+/**
+ * (macro) ResetVariableString
+ * Removes all variable strings from the string
+ */
+function ResetVariableString($string, $st = '{', $et = '}')
+{
+    $matches = Inbetween($string, $st, $et, false);
+
+    $matches = DefaultValue(@$matches[0], false);
+
+    if($matches) {
+
+        $string = str_replace($matches, "", $string);
+    }
+
+    return $string;
+
+}
+
 /***
- **
+ ** 
  ** Helpers: Classes and Constants
  **
  **/
@@ -502,9 +525,41 @@ function ReverseConstant($source, $value = null)
     return false;
 }
 
-/***
+
+/*** 
  **
- ** Helpers: Arrays
+ ** Helpers: HTML 
+ **
+ **/
+
+
+function Tag ($tag, $attributes = false, $content=false) {
+
+    $result = [];
+
+    foreach(Extend($attributes) as $key => $value) {
+
+        $key = is_integer($key) ? $value : $key;
+
+        $value = is_integer($key) ? false : $value;
+
+        if($key) {
+            $result[] = $key . ($value ? sprintr("=\"{0}\"", $value) : "");
+        }
+    }
+
+    return sprintr("<{0} {1} {2}>{3} {4}",
+        $tag, 
+        implode(" ", $result),
+        empty($content) ? "/" : "",
+        implode("", is_array($content) ? $content : [$content]),
+        $content !== false && $content  !== null ? sprintr("</{0}>", $tag) : ""
+    );
+}
+
+/*** 
+ **
+ ** Helpers: Arrays 
  **
  **/
 
@@ -548,23 +603,27 @@ function TraverseArray($input, $handler)
         return false;
     }
 
+    $result = $input;
+
     // cycle
     foreach ($input as $key => $value) {
         // prepare
         switch (true) {
             case is_object($key) || is_array($key):
-                TraverseArray($key, $handler);
+                $result[$key] = TraverseArray($key, $handler);
                 break;
             case is_object($value) || is_array($value):
-                TraverseArray($value, $handler);
+                $result = Extend($result, TraverseArray($value, $handler));
                 break;
             default:
                 if (is_callable($handler)) {
-                    $handler($key, $value);
+                    $result[$key] = $handler($key, $value);
                 }
                 break;
         }
     }
+
+    return $result;
 }
 
 /**
@@ -702,7 +761,7 @@ function HasElements($array, $elements, $match = false)
 /**
  * (macro) FromArrayObject
  * Retruns a matching key-name-value from an array object [{}]
- *
+ * 
  * @param array         The array
  * @param key           The name of the key
  * @param value         The value of the key
@@ -798,11 +857,11 @@ function IsLowerCase($s)
  * @param end               The end mark string
  * @param str               The string
  */
-function Inbetween($start, $end, $str, $single = true)
+function Inbetween($string, $start, $end, $single = true)
 {
     $matches = array();
     $regex = "/$start(.*?)$end/";
-    preg_match_all($regex, $str, $matches);
+    preg_match_all($regex, $string, $matches);
 
     return $single && isset($matches[1][0]) ? $matches[1][0] : $matches;
 }
@@ -823,7 +882,7 @@ function Guid($length = 32)
             $value = '';
 
             while (strlen($value) < $length) {
-                $value .= hash("SHA256", uniqid(rand(), true));
+                $value .= md5(uniqid(rand(), true));
             }
 
             $value = substr($value, 0, $length);
@@ -938,5 +997,15 @@ function Deflate($o)
 {
     return unserialize($o);
 }
+
+/**
+ * Substracts a string
+ * @param [type] $source [description]
+ * @param [type] $part   [description]
+ */
+function SubstractString($source, $part) {
+
+    return str_replace($part, "", $source);
+}   
 
 /* EOF (helpers.php) */
