@@ -450,9 +450,9 @@ function PrepareScript($source, $type = false)
     return base64_encode($source);
 }
 
-/*** 
+/***
  **
- ** Helpers: Variables 
+ ** Helpers: Variables
  **
  **/
 
@@ -477,7 +477,7 @@ function FillVariableString($string, $data, $simplematch = false, $st = '{', $et
 }
 
 /***
- ** 
+ **
  ** Helpers: Classes and Constants
  **
  **/
@@ -502,9 +502,9 @@ function ReverseConstant($source, $value = null)
     return false;
 }
 
-/*** 
+/***
  **
- ** Helpers: Arrays 
+ ** Helpers: Arrays
  **
  **/
 
@@ -702,7 +702,7 @@ function HasElements($array, $elements, $match = false)
 /**
  * (macro) FromArrayObject
  * Retruns a matching key-name-value from an array object [{}]
- * 
+ *
  * @param array         The array
  * @param key           The name of the key
  * @param value         The value of the key
@@ -823,7 +823,7 @@ function Guid($length = 32)
             $value = '';
 
             while (strlen($value) < $length) {
-                $value .= md5(uniqid(rand(), true));
+                $value .= hash("SHA256", uniqid(rand(), true));
             }
 
             $value = substr($value, 0, $length);
