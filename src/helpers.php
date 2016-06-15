@@ -451,9 +451,9 @@ function PrepareScript($source, $type = false)
     return base64_encode($source);
 }
 
-/*** 
+/***
  **
- ** Helpers: Variables 
+ ** Helpers: Variables
  **
  **/
 
@@ -470,11 +470,11 @@ function FillVariableString($string, $data, $simplematch = false, $st = '{', $et
     foreach(Extend($data) as $name => $value) {
 
         if (!is_array($value) && !is_object($value)) {
-            
+
             // template field
             $string = str_replace($simplematch ? $name : sprintf('%s%s%s', $st, $name, $et), $value, $string);
         }
-    
+
     }
 
     return $string;
@@ -492,7 +492,17 @@ function ResetVariableString($string, $st = '{', $et = '}')
 
     if($matches) {
 
-        $string = str_replace($matches, "", $string);
+        $perform = [];
+
+        foreach($matches as $match) {
+
+            if(ctype_alnum($match)) {
+                $perform[] = $match;
+            }
+
+        }
+
+        $string = str_replace($perform, "", $string);
     }
 
     return $string;
@@ -500,7 +510,7 @@ function ResetVariableString($string, $st = '{', $et = '}')
 }
 
 /***
- ** 
+ **
  ** Helpers: Classes and Constants
  **
  **/
@@ -526,9 +536,9 @@ function ReverseConstant($source, $value = null)
 }
 
 
-/*** 
+/***
  **
- ** Helpers: HTML 
+ ** Helpers: HTML
  **
  **/
 
@@ -549,7 +559,7 @@ function Tag ($tag, $attributes = false, $content=false) {
     }
 
     return sprintr("<{0} {1} {2}>{3} {4}",
-        $tag, 
+        $tag,
         implode(" ", $result),
         empty($content) ? "/" : "",
         implode("", is_array($content) ? $content : [$content]),
@@ -557,9 +567,9 @@ function Tag ($tag, $attributes = false, $content=false) {
     );
 }
 
-/*** 
+/***
  **
- ** Helpers: Arrays 
+ ** Helpers: Arrays
  **
  **/
 
@@ -744,7 +754,6 @@ function TranslateArray($array, $keyMap, $includeOriginal = true)
 
 function HasElements($array, $elements, $match = false, $noempty = false)
 {
-
     foreach($elements as $key => $value) {
 
         $key = is_numeric($key) ? $value : $key;
@@ -763,7 +772,7 @@ function HasElements($array, $elements, $match = false, $noempty = false)
 /**
  * (macro) FromArrayObject
  * Retruns a matching key-name-value from an array object [{}]
- * 
+ *
  * @param array         The array
  * @param key           The name of the key
  * @param value         The value of the key
@@ -1008,6 +1017,6 @@ function Deflate($o)
 function SubstractString($source, $part) {
 
     return str_replace($part, "", $source);
-}   
+}
 
 /* EOF (helpers.php) */
