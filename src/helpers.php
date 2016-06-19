@@ -573,6 +573,41 @@ function Tag ($tag, $attributes = false, $content=false) {
  **
  **/
 
+
+/**
+ * (macro) Pick
+ * Picks a set list of values from an array and returns them
+ */
+function Pick()
+{
+    // initialize result
+    $result = [];
+
+    $source = false;
+
+    $fields = [];
+
+    // cycle
+    foreach (func_get_args() as $arr) {
+
+        if(!$source) {
+            $source = Extend($arr);
+        } else {
+            $fields = Extend($fields, explode(",", $arr));
+        }
+    }
+
+    // find commons
+    foreach($fields as $name) {
+        if(isset($source[$name])) {
+            $result[$name] = $source[$name];
+        }
+    }
+
+    // return result
+    return $result;
+}
+
 /**
  * (macro) Extend
  * Extends an array like the jQuery $.extend function.
