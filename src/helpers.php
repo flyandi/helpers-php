@@ -496,13 +496,12 @@ function ResetVariableString($string, $st = '{', $et = '}')
 
         foreach(Extend($matches) as $match) {
 
-            $match = str_replace([$st, $et], "", $match);
-
-            if(ctype_alnum($match)) {
-                $perform[] = sprintr("{0}{1}{2}", $st, $match, $et);
+            if(strpos($match, " ") === false) {
+                $perform[] = $match;
             }
 
         }
+
         $string = str_replace($perform, "", $string);
     }
 
