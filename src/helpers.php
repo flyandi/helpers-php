@@ -494,14 +494,15 @@ function ResetVariableString($string, $st = '{', $et = '}')
 
         $perform = [];
 
-        foreach($matches as $match) {
+        foreach(Extend($matches) as $match) {
+
+            $match = str_replace([$st, $et], "", $match);
 
             if(ctype_alnum($match)) {
-                $perform[] = $match;
+                $perform[] = sprintr("{0}{1}{2}", $st, $match, $et);
             }
 
         }
-
         $string = str_replace($perform, "", $string);
     }
 
@@ -572,41 +573,6 @@ function Tag ($tag, $attributes = false, $content=false) {
  ** Helpers: Arrays
  **
  **/
-
-
-/**
- * (macro) Pick
- * Picks a set list of values from an array and returns them
- */
-function Pick()
-{
-    // initialize result
-    $result = [];
-
-    $source = false;
-
-    $fields = [];
-
-    // cycle
-    foreach (func_get_args() as $arr) {
-
-        if(!$source) {
-            $source = Extend($arr);
-        } else {
-            $fields = Extend($fields, explode(",", $arr));
-        }
-    }
-
-    // find commons
-    foreach($fields as $name) {
-        if(isset($source[$name])) {
-            $result[$name] = $source[$name];
-        }
-    }
-
-    // return result
-    return $result;
-}
 
 /**
  * (macro) Extend
