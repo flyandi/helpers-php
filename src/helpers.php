@@ -746,7 +746,7 @@ function TranslateArray($array, $keyMap, $includeOriginal = true)
 
     return $result;
 }
-
+HasElements
 /**
  * (macro) HasElements
  * Allows to check if an array if multiple elements
@@ -754,7 +754,7 @@ function TranslateArray($array, $keyMap, $includeOriginal = true)
 
 function HasElements($array, $elements, $match = false, $noempty = false)
 {
-    foreach($elements as $key => $value) {
+    foreach(Extend($elements) as $key => $value) {
 
         $key = is_numeric($key) ? $value : $key;
 
