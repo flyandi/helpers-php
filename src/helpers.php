@@ -746,7 +746,7 @@ function TranslateArray($array, $keyMap, $includeOriginal = true)
 
     return $result;
 }
-HasElements
+
 /**
  * (macro) HasElements
  * Allows to check if an array if multiple elements
