@@ -595,6 +595,38 @@ function Extend()
     return $result;
 }
 
+
+/**
+ * (macro) Combine
+ * Same as Extend however empty values are not being overwritten.
+ *
+ * @param <multiple>    As many arrays
+ */
+function Combine()
+{
+    // initialize result
+    $result = array();
+
+    // cycle
+    foreach (func_get_args() as $arr) {
+        if (is_array($arr) || is_object($arr)) {
+
+            $item = [];
+
+            foreach((array) $arr as $key => $value) {
+                if(!empty($value)) {
+                    $item[$key] = $value;
+                }
+            }
+
+            $result = array_merge($result, $item);
+        }
+    }
+
+    // return result
+    return $result;
+}
+
 /**
  * (macro) TraverseArray
  * Traverses an array with filters.
