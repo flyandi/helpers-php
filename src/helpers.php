@@ -754,6 +754,8 @@ function TranslateArray($array, $keyMap, $includeOriginal = true)
 
 function HasElements($array, $elements, $match = false, $noempty = false)
 {
+    if(is_string($elements)) $elements = explode(",", $elements);
+
     foreach(Extend($elements) as $key => $value) {
 
         $key = is_numeric($key) ? $value : $key;
