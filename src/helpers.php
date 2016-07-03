@@ -464,15 +464,21 @@ function PrepareScript($source, $type = false)
  * @param string            Any JSON strin
  * @param assoc             Set true to return a object
  */
-function FillVariableString($string, $data, $simplematch = false, $st = '{', $et = '}')
+function FillVariableString($string, $data, $simplematch = false, $st = '{', $et = '}', $suffix = false)
 {
     // cycle data
     foreach(Extend($data) as $name => $value) {
+
+        if($suffix) $name = $suffix . "." . $name;
 
         if (!is_array($value) && !is_object($value)) {
 
             // template field
             $string = str_replace($simplematch ? $name : sprintf('%s%s%s', $st, $name, $et), $value, $string);
+
+        } else {
+
+            $string = FillVariableString($string, $value, $simplematch, $st, $et, $name);
         }
 
     }
