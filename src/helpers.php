@@ -494,7 +494,7 @@ function ResetVariableString($string, $st = '{', $et = '}')
 {
     $matches = Inbetween($string, $st, $et, false);
 
-    $matches = DefaultValue(@$matches[0], false);
+    $matches = DefaultValue(@$matches[1], false);
 
     if($matches) {
 
@@ -502,8 +502,8 @@ function ResetVariableString($string, $st = '{', $et = '}')
 
         foreach(Extend($matches) as $match) {
 
-            if(strpos($match, " ") === false) {
-                $perform[] = $match;
+            if(preg_match('/^[\w]+$/', $match)) {
+                $perform[] = sprintr("{0}{1}{2}", $st, $match, $et);
             }
 
         }
