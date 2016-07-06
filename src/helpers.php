@@ -809,6 +809,25 @@ function HasElements($array, $elements, $match = false, $noempty = false)
     return true;
 }
 
+
+/**
+ * [TrimArray description]
+ * @param [type] $array [description]
+ */
+function TrimArray($array) {
+
+    foreach(Extend($array) as $key => $value) {
+
+        if(is_array($value) || is_object($value) {
+            $array[$key] = TrimArray($value);
+        } else {
+            $array[$key] = trim($value);
+        }
+    }
+
+    return $array;
+}
+
 /**
  * (macro) FromArrayObject
  * Retruns a matching key-name-value from an array object [{}]
