@@ -818,7 +818,7 @@ function TrimArray($array) {
 
     foreach(Extend($array) as $key => $value) {
 
-        if(is_array($value) || is_object($value) {
+        if(is_array($value) || is_object($value)) {
             $array[$key] = TrimArray($value);
         } else {
             $array[$key] = trim($value);
