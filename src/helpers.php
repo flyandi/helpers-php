@@ -816,7 +816,9 @@ function HasElements($array, $elements, $match = false, $noempty = false)
  */
 function TrimArray($array) {
 
-    foreach(Extend($array) as $key => $value) {
+    $array = Extend($array);
+
+    foreach($array as $key => $value) {
 
         if(is_array($value) || is_object($value)) {
             $array[$key] = TrimArray($value);
