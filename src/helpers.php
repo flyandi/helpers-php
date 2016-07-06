@@ -828,6 +828,30 @@ function TrimArray($array) {
     return $array;
 }
 
+
+/**
+ * [Pick description]
+ * @param [type] $array  [description]
+ * @param [type] $fields [description]
+ */
+function Pick($array, $fields) {
+
+    $result = [];
+
+    if(is_string($fields)) $fields = explode(",", $fields);
+
+    $fields = Extend($fields);
+
+    foreach(Extend($array) as $key => $value) {
+
+        if(in_array($key, $fields)) {
+            $result[$key] = $value;
+        }
+    }
+
+    return $result;
+}
+
 /**
  * (macro) FromArrayObject
  * Retruns a matching key-name-value from an array object [{}]
