@@ -846,7 +846,7 @@ function Pick($array, $fields) {
 
     foreach(Extend($array) as $key => $value) {
 
-        if(in_array($key, $fields)) {
+        if(!is_numeric($key) && in_array($key, $fields)) {
             $result[$key] = $value;
         }
     }
