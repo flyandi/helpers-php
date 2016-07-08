@@ -502,7 +502,7 @@ function ResetVariableString($string, $st = '{', $et = '}')
 
         foreach(Extend($matches) as $match) {
 
-            if(preg_match('/^[\w\.]+$/', $match)) {
+            if(preg_match('/^[\w.]+$/', $match)) {
                 $perform[] = sprintr("{0}{1}{2}", $st, $match, $et);
             }
 
