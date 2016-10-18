@@ -464,7 +464,7 @@ function PrepareScript($source, $type = false)
  * @param string            Any JSON strin
  * @param assoc             Set true to return a object
  */
-function FillVariableString($string, $data, $simplematch = false, $st = '{', $et = '}', $suffix = false)
+function FillVariableString($string, $data, $simplematch = false, $st = '{', $et = '}', $suffix = false, $max = 3, $__level = 0)
 {
     // cycle data
     foreach(Extend($data) as $name => $value) {
@@ -478,7 +478,13 @@ function FillVariableString($string, $data, $simplematch = false, $st = '{', $et
 
         } else {
 
-            $string = FillVariableString($string, $value, $simplematch, $st, $et, $name);
+            if($level < $max) {
+
+                $__level++;
+
+                $string = FillVariableString($string, $value, $simplematch, $st, $et, $name, $suffix, $max, $__level);
+
+            }
         }
 
     }
