@@ -478,7 +478,7 @@ function FillVariableString($string, $data, $simplematch = false, $st = '{', $et
 
         } else {
 
-            if($level < $max) {
+            if($__level < $max) {
 
                 $__level++;
 
