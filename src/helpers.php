@@ -466,6 +466,8 @@ function PrepareScript($source, $type = false)
  */
 function FillVariableString($string, $data, $simplematch = false, $st = '{', $et = '}', $suffix = false, $max = 3, $__level = 0)
 {
+    $__level++;
+
     // cycle data
     foreach(Extend($data) as $name => $value) {
 
@@ -478,9 +480,7 @@ function FillVariableString($string, $data, $simplematch = false, $st = '{', $et
 
         } else {
 
-            if($__level < $max) {
-
-                $__level++;
+            if($__level <= $max) {
 
                 $string = FillVariableString($string, $value, $simplematch, $st, $et, $name, $suffix, $max, $__level);
 
