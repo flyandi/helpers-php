@@ -598,7 +598,7 @@ function Extend()
 
     // cycle
     foreach (func_get_args() as $arr) {
-        if (is_array($arr) || is_object($arr)) {
+        if (!is_a($arr) && (is_array($arr) || is_object($arr))) {
             $result = array_merge($result, (array) $arr);
         }
     }
