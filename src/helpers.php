@@ -1,16 +1,13 @@
 <?php
-
 /**
- * flyandi:php-helper library for PHP.
+ * flyandi:php-helper
  *
- * A useful collection of global PHP helpers
+ * A useful collection of global PHP helpers.
  *
- * @version: v1.0.3
+ * @version: v1.1.0
  * @author: Andy Schwarz
  *
- * Created by Andy Schwarz. Please report any bug at http://github.com/flyandi/php-helpers
- *
- * Copyright (c) 2015 Andy Schwarz http://github.com/flyandi
+ * Copyright (c) 2017 flyandi (http://github.com/flyandi/php-helpers)
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -29,7 +26,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * NON INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
  * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
@@ -49,11 +46,11 @@ define('RAW_VAR', '@RAW___VAR');
  **/
 
 /**
- * (macro) DefaultValue
- * Checks the given value and returns an alternative if not passed.
- *
- * @param value             The value to check
- * @param default           A default value
+ * Evaluates if a variable has a value otherwise returns a default value.
+ * @example $value = DefaultValue(@$booleanValue, false);
+ * @param mixed $value The variable to evaluate.
+ * @param mixed $default A default value that is returned if the variable doesn't contain a valid value. Returns null as default.
+ * @return mixed Returns the original value or the default value.
  */
 function DefaultValue($value, $default = null)
 {
@@ -65,10 +62,9 @@ function DefaultValue($value, $default = null)
 }
 
 /**
- * (macro) GetVarStack
- * returns all variables one stack.
- *
- * @param void
+ * Returns the internal PHP variable stack in the order of REQUEST, COOKIE, GET, POST and GLOBALS.
+ * @example $stack = GetVarStack();
+ * @return array
  */
 function GetVarStack()
 {
@@ -76,15 +72,14 @@ function GetVarStack()
 }
 
 /**
- * (macro) GetVar
- * returns a variable from the environment stack.
- *
- * @param name              The name of the variable
- * @param default           A default value
+ * Returns a variable from the variable stack.
+ * @example $myVariable = GetVar("post-method");
+ * @param string $name A string identifying the variable name.
+ * @param mixed $default A default value if the variable doesn't exists in the stack.
+ * @return mixed|null
  */
 function GetVar($name, $default = null)
 {
-
     // cycle environment buckets
     foreach (array($_REQUEST, $_COOKIE, $_GET, $_POST, $GLOBALS) as $x => $n) {
         if (isset($n[$name])) {
@@ -96,10 +91,12 @@ function GetVar($name, $default = null)
 }
 
 /**
- * (macro) GetRawVar
- * returns a variable from the raw input.
- *
- * @param name              If given it returns only the variable for it
+ * Returns the stack or a specific variable from the PHP raw stream (php://input).
+ * @example $jsonPayload = GetRawVar();
+ * @example $myVar = GetRawVar("postName");
+ * @param boolean|string $name If passed, this function will return a specific variable from the raw stream.
+ * @param mixed|null $default A default value if the variable doesn't exists in the stack.
+ * @return mixed|null
  */
 function GetRawVar($name = false, $default = null)
 {
@@ -111,11 +108,11 @@ function GetRawVar($name = false, $default = null)
 }
 
 /**
- * (macro) SetVar
- * returns a variable from the environment stack.
- *
- * @param name              The name of the variable
- * @param value             The value
+ * Sets a value in the global variable stack.
+ * @example SetVar("postId", 28);
+ * @param string $name A string identifying the variable name.
+ * @param mixed|null $value The value. If none passed, the value will be set to null.
+ * @return void
  */
 function SetVar($name, $value = null)
 {
@@ -123,26 +120,28 @@ function SetVar($name, $value = null)
 }
 
 /**
- * (macro) GetVarEx
- * returns a variable from a variable stack and then environment.
- *
- * @param name              The name of the variable
- * @param variables         A stack of variables
- * @param default           A default value
+ * Returns a value from a variable stack. This function is similar to GetVar however it searches first in the custom variable stack.
+ * @example $value = GetVarEx("lastname", ["firstname" => "Han", "lastname" => "Solo"], "Skywalker");
+ * @param string $name A string identifying the variable name.
+ * @param array|bool $variables A array of custom variables.
+ * @param mixed|null $default A default value if the variable doesn't exists in the stack.
+ * @return mixed|null
  */
 function GetVarEx($name, $variables = false, $default = null)
 {
     return $variables ? DefaultValue(@$variables[$name], $default) : GetVar($name, $default);
 }
 
+
 /**
- * (macro) GetSecureVar
- * reads a variable only from the globals which can't be modified from outside.
- *
- * @param name              The name of the variable to read
- * @param default           A default value
+ * Returns a variable only from the GLOBALS stack which can not be modified from outside.
+ * @warning This function might not be safe at this point and is for backwards compatibility included here.
+ * @example $value = GetSecureVar("secret-password");
+ * @param string $name A string identifying the variable name.
+ * @param mixed $default A default value if the variable doesn't exists in the stack.
+ * @return mixed|null
  */
-function GetSecureVar($name, $default = '')
+function GetSecureVar($name, $default = null)
 {
     if (isset($GLOBALS[$name])) {
         return @$GLOBALS[$name];
@@ -152,12 +151,14 @@ function GetSecureVar($name, $default = '')
 }
 
 /**
- * (macro) GetDirVar
- * reads the index name of the request URL.
- *
- * @param index             Index/Position of Location
- * @param default           A default value
- * @param path              An alternative path
+ * Returns a variable from a request URI string by it's position index. Each slash identifies a position index where the root is index 0.
+ * @example Request URI: /api/xwing/set/lasers
+ * @example $vehicle = GetDirVar(2);
+ * @example $vehicle is now "xwing".
+ * @param int $index The position index.
+ * @param mixed|null $default A default value if the index doesn't exists.
+ * @param string|bool $path A custom path to be considered instead of the server variable REQUEST_URI.
+ * @return mixed|null
  */
 function GetDirVar($index = 0, $default = null, $path = false)
 {
@@ -170,9 +171,8 @@ function GetDirVar($index = 0, $default = null, $path = false)
         // split
         $d = explode('/', $r[0]);
         // return value
-        return @DefaultValue(strtolower(@$d[$index + 1]), $default);
+        return DefaultValue(@strtolower(@$d[$index + 1]), $default);
     }
-
     return $default;
 }
 

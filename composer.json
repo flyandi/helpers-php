@@ -1,11 +1,11 @@
 {
     "name": "flyandi/helpers",
     "type": "library",
-    "description": "A collection of useful php helpers.",
+    "description": "A collection of useful global php helpers.",
     "keywords": [],
     "homepage": "https://github.com/flyandi/php-helpers",
     "license": "MIT",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "authors": [
         {
             "name": "Andreas Schwarz",

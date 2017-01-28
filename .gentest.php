@@ -22,17 +22,35 @@ foreach(get_defined_functions()["user"] as $fn) {
 
 		$value = "";
 
-		$output[] =  ($optional  ? "//" : "") . "$" . $param->name . " = \"" . $value ."\";";
+		$output[] =  "\t" . ($optional  ? "//" : "") . "$" . $param->name . " = \"" . $value ."\";";
 
 		$attributes[] = ($optional ? "/*" : "") . "$" . $param->name . ($optional ? "*/" : "");
 
 	}
-	$output[] = "";
 
-	$output[] = "\$result = " . $name ."(" . implode(", ", $attributes) . ");";
-
-	$fn = "test/" . $name . ".php";
+	$fn = "tests/src/" . $name . ".php";
 
 	if(!file_exists($fn))
-		file_put_contents($fn, sprintf("<?php\n\ninclude(\"../src/helpers.php\");\n\n%s\n\nvar_dump(\$result);", implode("\n", $output)));
+		file_put_contents($fn, sprintr("<?php
+/**
+ * flyandi:php-helper
+ *
+ * Test for function {0}
+ */
+
+use PHPUnit_Framework_TestCase;
+
+class {0}Tests extends PHPUnit_Framework_TestCase {
+
+    public function test{0}() { 
+        {1}
+        \$result = {0}({2});
+
+        return \$this->assertEquals(true, \$result);
+    }
+}",
+    $name,
+    implode("\n", $output),
+    implode(", ", $attributes)
+));
 }
