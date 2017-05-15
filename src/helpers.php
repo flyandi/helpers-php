@@ -1078,15 +1078,25 @@ function sprintp()
 }
 
 /**
- * (startsWith)
+ * Checks if a string starts with a certain string
+ * @example $match = startsWith("HelloFoo", "Hello");
+ * @param $haystack
+ * @param $needle
+ * @return bool
  */
-
-function startsWith($haystack, $needle) {
-    return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+if(!function_exists("startsWith")) {
+    function startsWith($haystack, $needle)
+    {
+        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+    }
 }
 
 /**
- * (Inflate) serializes a variable.
+ * Serializes a string
+ * @proxyfor serialize
+ * @deprecated
+ * @param $o
+ * @return string
  */
 function Inflate($o)
 {
@@ -1094,7 +1104,11 @@ function Inflate($o)
 }
 
 /**
- * (Deflate) unserializes a variable.
+ * Deserializes a variable
+ * @proxyfor unserialize
+ * @deprecated
+ * @param $o
+ * @return mixed
  */
 function Deflate($o)
 {
@@ -1102,12 +1116,14 @@ function Deflate($o)
 }
 
 /**
- * Substracts a string
- * @param [type] $source [description]
- * @param [type] $part   [description]
+ * Substracts a string from another string
+ * @example $justFoo = SubstractString("HelloFoo", "Hello"); // returns Foo
+ * @param $source
+ * @param $part
+ * @return mixed
  */
-function SubstractString($source, $part) {
-
+function SubstractString($source, $part)
+{
     return str_replace($part, "", $source);
 }
 
