@@ -4,10 +4,10 @@
  *
  * A useful collection of global PHP helpers.
  *
- * @version: v1.1.0
+ * @version: v1.2.0
  * @author: Andy Schwarz
  *
- * Copyright (c) 2017 flyandi (http://github.com/flyandi/php-helpers)
+ * Copyright (c) 2018 flyandi (http://github.com/flyandi/php-helpers)
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -276,9 +276,17 @@ function SetServerVar($name, $value)
 function GetHTTPHeaderVar($name, $default = null)
 {
     if (function_exists('getallheaders')) {
+
+        $name = strtolower($name);
+        
         $headers = getallheaders();
 
-        return isset($headers[$name]) ? $headers[$name] : $default;
+        $lower = [];
+        foreach($headers as $n => $v) {
+            $lower[strtolower($n)] = $v;
+        }
+
+        return isset($lower[$name]) ? $lower[$name] : $default;
     }
 
     return $default;
